@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Repository
 @Transactional
 public class LecturesWorker {
@@ -19,5 +21,10 @@ public class LecturesWorker {
         lecture = this.lecturesDao.addLecture(lecture);
         System.out.println(lecture);
         return lecture;
+    }
+
+    public List<Lecture> getLecturesByTeacher(String name){
+        List<Lecture> list = lecturesDao.getLecturesByTeacher(name);
+        return list;
     }
 }

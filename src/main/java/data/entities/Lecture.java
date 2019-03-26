@@ -4,6 +4,15 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
+@NamedQueries({
+        @NamedQuery(name = "selectLecturesByTeacher",
+                query=  "SELECT DISTINCT lec " +
+                        "FROM Lecture lec " +
+                        "WHERE lec.teacher IN (  SELECT t" +
+                        "                           FROM Teacher t" +
+                        "                           WHERE t.name = :name)")
+})
+@Cacheable(true)
 @Table(name = "lectures")
 public class Lecture {
     @Id

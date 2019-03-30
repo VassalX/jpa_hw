@@ -4,24 +4,37 @@ import data.dao.TeachersDao;
 import data.entities.Teacher;
 import data.entities.TeacherPosition;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.List;
 
-@Repository
-@Transactional
+@Service
 public class TeachersWorker {
+    @Autowired
+    private TransactionTemplate transactionTemplate;
+
     @Autowired
     private TeachersDao teachersDao;
 
     public TeachersWorker() {
     }
 
-    public Teacher addTeacher(Teacher teacher) {
-        teacher = this.teachersDao.addTeacher(teacher);
-        System.out.println(teacher);
-        return teacher;
+    public void saveTeacher(final Teacher teacher) {
+        transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+            @Override
+            protected void doInTransactionWithoutResult(TransactionStatus txStatus) {
+                try{
+                    teachersDao.addTeacher(teacher);
+                    System.out.println("Teacher has been added " + teacher);
+                }catch (Exception e){
+                    txStatus.setRollbackOnly();
+                    throw e;
+                }
+            }
+        });
     }
 
     public List<Teacher> getTeachersByPos(TeacherPosition pos){

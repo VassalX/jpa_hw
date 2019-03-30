@@ -29,23 +29,26 @@ public class App {
         lec2.setCredits(3.0D);
         lec2.setDate(new Date(System.currentTimeMillis()));
 
+        Lecture lec3 = new Lecture();
+        lec3.setName("Prolog");
+        lec3.setCredits(4.0D);
+        lec3.setDate(new Date(System.currentTimeMillis()));
+
         Teacher teacher = new Teacher();
-        teacher.setName("Pavlenko");
-        teacher.setPosition(TeacherPosition.PROFESSOR);
-        teacher.addLecture(lec1);
-        teacher.addLecture(lec2);
+        teacher.setName("Petrenko");
+        teacher.setPosition(TeacherPosition.ASSISTANT_PROFESSOR);
+        teacher.addLecture(lec3);
 
         TeachersWorker teachersWorker = (TeachersWorker)context.getBean("teachersWorker");
         LecturesWorker lecturesWorker = (LecturesWorker)context.getBean("lecturesWorker");
 
-        //teachersWorker.addTeacher(teacher);
-        //lecturesWorker.addLecture(lec1);
-        //lecturesWorker.addLecture(lec2);
+        teachersWorker.saveTeacher(teacher);
+        lecturesWorker.saveLecture(lec3);
 
         teachersWorker.getTeachersByPos(TeacherPosition.PROFESSOR);
         teachersWorker.getTeachersByPos(TeacherPosition.PROFESSOR);
         teachersWorker.getTeachersByPos(TeacherPosition.PROFESSOR);
-        List<Teacher> tea_list = teachersWorker.getTeachersByPos(TeacherPosition.PROFESSOR);
+        List<Teacher> tea_list = teachersWorker.getTeachersByPos(TeacherPosition.ASSISTANT_PROFESSOR);
 
         for (Teacher t : tea_list) {
             System.out.println(t.getName());

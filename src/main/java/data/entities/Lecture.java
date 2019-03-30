@@ -81,4 +81,14 @@ public class Lecture {
         counter++;
     }
 
+    @Override
+    public String toString() {
+        return "Lecture{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", credits=" + credits +
+                ", date=" + date +
+                ", teacher=" + teacher +
+                '}';
+    }
 }

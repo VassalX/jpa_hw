@@ -2,9 +2,10 @@ package data.dao;
 
 import data.entities.Teacher;
 import data.entities.TeacherPosition;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
+@Transactional
 public interface TeachersDao {
     Teacher addTeacher(Teacher var1);
 

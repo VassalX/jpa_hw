@@ -70,4 +70,12 @@ public class Teacher {
         return this.lectures;
     }
 
+    @Override
+    public String toString() {
+        return "Teacher{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", position=" + position +
+                '}';
+    }
 }

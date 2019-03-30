@@ -3,14 +3,11 @@ package data.dao;
 import data.entities.Lecture;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
-@Transactional
 public class LectureDaoJPAImpl implements LecturesDao{
     public static int getLectureCount = 0;
 
@@ -26,8 +23,21 @@ public class LectureDaoJPAImpl implements LecturesDao{
         return em.find(Lecture.class,id);
     }
 
-    public void saveLecture(Lecture lecture) {
-        em.merge(lecture);
+    public Lecture saveLecture(Lecture lecture) {
+        Lecture createdLecture = null;
+        if(lecture != null){
+            try{
+                em.getTransaction().begin();
+                createdLecture = em.merge(lecture);
+                em.getTransaction().commit();
+            }catch (Exception ex){
+                System.out.println("ERROR in Lecture.update: " + ex.getLocalizedMessage());
+                em.getTransaction().rollback();
+            }finally {
+                em.close();
+            }
+        }
+        return createdLecture;
     }
 
     @Cacheable("lecturesCache")
@@ -38,4 +48,5 @@ public class LectureDaoJPAImpl implements LecturesDao{
                 .setParameter("name",name)
                 .getResultList();
     }
+
 }
